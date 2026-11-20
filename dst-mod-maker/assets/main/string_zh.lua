@@ -1,0 +1,6 @@
+-- 只放中文文字。替换与启用本次涉及的键；英文文件保持相同的键。
+-- STRINGS.NAMES.MY_PREFAB = "物品名称"
+-- STRINGS.RECIPE_DESC.MY_PREFAB = "配方描述"
+-- STRINGS.CHARACTERS.GENERIC.DESCRIBE.MY_PREFAB = "检查文字"
+-- STRINGS.ACTIONS.MY_ACTION = "动作名称"
+-- 动作注册读取上述值，如 AddAction("MY_ACTION", STRINGS.ACTIONS.MY_ACTION, fn)。

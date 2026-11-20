@@ -1,0 +1,6 @@
+-- English text only. Populate the same keys as string_zh.lua.
+-- STRINGS.NAMES.MY_PREFAB = "Item name"
+-- STRINGS.RECIPE_DESC.MY_PREFAB = "Recipe description"
+-- STRINGS.CHARACTERS.GENERIC.DESCRIBE.MY_PREFAB = "Inspect text"
+-- STRINGS.ACTIONS.MY_ACTION = "Action name"
+-- Pass the localized action text to AddAction (or the Action object's .str).

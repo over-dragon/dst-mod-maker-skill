@@ -1,0 +1,742 @@
+---@meta
+
+---@class AnimState
+AnimState = {}
+
+---添加新build
+---@param buildname string|hashed_code # build名
+---author: Runar
+function AnimState:AddOverrideBuild(buildname)
+end
+
+---暂停时是否也播放动画
+---@param bool boolean # 是否播放动画
+---author: Runar
+function AnimState:AnimateWhilePaused(bool)
+end
+
+---判断动画是否播放完
+---@return boolean # 动画是否结束播放
+---author: Runar
+function AnimState:AnimDone()
+end
+
+---重新分配物品的外观
+---@param userid any # 
+---@param body any # 
+---@param hand any # 
+---@param legs any # 
+---@param feet any # 
+---author: 
+function AnimState:AssignItemSkins(userid,body,hand,legs,feet)
+end
+
+---当前build下是否有对应通道
+---@param symbol string # 通道名
+---@return boolean # 是否有给定通道
+---author: Runar
+function AnimState:BuildHasSymbol(symbol)
+end
+
+---清除所有覆盖通道
+---author: Runar
+function AnimState:ClearAllOverrideSymbols()
+end
+
+---移除着色器
+---author: Runar
+function AnimState:ClearBloomEffectHandle()
+end
+
+---移除默认着色器
+---author: Runar
+function AnimState:ClearDefaultEffectHandle()
+end
+
+---清除覆盖的build
+---author: Runar
+function AnimState:ClearOverrideBuild()
+end
+
+---清除覆盖的通道
+---@param symbol string # 通道名
+---author: Runar
+function AnimState:ClearOverrideSymbol(symbol)
+end
+
+---清除通道泛光
+---@param symbol string # 通道名
+---author: Runar
+function AnimState:ClearSymbolBloom(symbol)
+end
+
+---清除所有覆盖通道
+---author: Runar
+function AnimState:ClearSymbolExchanges()
+end
+
+---比较默认通道defaultsymbol是否是symbol通道，一般用来自定义idle动画
+---@param defaultsymbol string # 通道名
+---@param symbol string # 通道名
+---@return boolean # 
+---author: 
+function AnimState:CompareSymbolBuilds(defaultsymbol,symbol)
+end
+
+---UNKNOWN
+---@param dt number # 
+---author: 
+function AnimState:FastForward(dt)
+end
+
+---获取叠加的颜色，返回r,g,b,a
+---@return number # 红色通道(0~1)
+---@return number # 绿色通道(0~1)
+---@return number # 蓝色通道(0~1)
+---@return number # 不透明度(0~1)
+---author: Runar
+function AnimState:GetAddColour()
+end
+
+---获取bank的哈希
+---@return hashed_code #
+---author: Runar
+function AnimState:GetBankHash()
+end
+
+---获取动画光度
+---@return number # 光度(Brightness, 0~2)
+---author: Runar
+function AnimState:GetBrightness()
+end
+
+---获取build名
+---@return string # build名
+---author: Runar
+function AnimState:GetBuild()
+end
+
+---获取当前动画帧数
+---@return number # 时间(帧)
+---author: Runar
+function AnimState:GetCurrentAnimationFrame()
+end
+
+---动画总长度，单位：秒，1 帧是 1/30 秒，0.33333 秒
+---@return number # 时间(秒)
+---author: Runar
+function AnimState:GetCurrentAnimationLength()
+end
+
+---获取当前动画的总帧数
+---@return number # 总帧数
+---author: lan
+function AnimState:GetCurrentAnimationNumFrames()
+end
+
+---获取当前动画播放的时间，GetCurrentAnimationLength获取的是动画的总长度，GetCurrentAnimationTime获取的是动画当前播放的时间（我猜的）
+---@return number # 
+---author: 
+function AnimState:GetCurrentAnimationTime()
+end
+
+---
+---author: lan 开发者注释:该方法在开发环境以外使用可能会出错
+function AnimState:GetCurrentBankName()
+end
+
+---获取当前动画的朝向，返回0，1，2，3，分别代表什么方向就需要进游戏测试了
+---@return number # 朝向的值
+---author: Runar
+function AnimState:GetCurrentFacing()
+end
+
+---获取动画历史数据
+---@return string # bank
+---@return string # animation
+---@return integer # current_frame
+---@return integer # unknown
+---@return integer # unknown
+---@return integer # unknown
+---author: Runar
+function AnimState:GetHistoryData()
+end
+
+---获取动画色度(Hue)
+---@return number # 色度(0~1)
+---author: Runar
+function AnimState:GetHue()
+end
+
+---UNKNOWN
+---author: 
+function AnimState:GetInheritsSortKey()
+end
+
+---UNKNOWN
+---author: 
+function AnimState:GetLayer()
+end
+
+---获取叠乘的颜色，返回r,g,b,a
+---@return number # 红色通道(0~1)
+---@return number # 绿色通道(0~1)
+---@return number # 蓝色通道(0~1)
+---@return number # 不透明度(0~1)
+---author: Runar
+function AnimState:GetMultColour()
+end
+
+---获取动画饱和度
+---@return number # 饱和度(Saturation, 0~1)
+---author: Runar
+function AnimState:GetSaturation()
+end
+
+---获取当前皮肤的build
+---@return string # 皮肤当前的build
+---author: Runar
+function AnimState:GetSkinBuild()
+end
+
+---UNKNOWN
+---author: 
+function AnimState:GetSortOrder()
+end
+
+---获取通道叠加的颜色，返回r,g,b,a
+---@return number # 红色通道(0~1)
+---@return number # 绿色通道(0~1)
+---@return number # 蓝色通道(0~1)
+---@return number # 不透明度(0~1)
+---author: Runar
+function AnimState:GetSymbolAddColour()
+end
+
+---获取通道HSB颜色空间值
+---@param symbol string # 通道名
+---@return number # 色度(Hue, 0~1)
+---@return number # 饱和度(Saturation, 0~1)
+---@return number # 光度(Brightness, 0~2)
+---author: 
+function AnimState:GetSymbolHSB(symbol)
+end
+
+---获取通道叠乘的颜色，返回r,g,b,a
+---@param symbol string # 通道名
+---@return number # 红色通道(0~1)
+---@return number # 绿色通道(0~1)
+---@return number # 蓝色通道(0~1)
+---@return number # 不透明度(0~1)
+---author: Runar
+function AnimState:GetSymbolMultColour(symbol)
+end
+
+---获取覆盖通道名
+---@param symbol string # 通道名
+---@return hashed_code|nil # overridebuild
+---@return hashed_code|nil # overridesymbol
+---@nodiscard
+---author: Runar
+---```lua
+-----例如 用此方法生成一个和玩家手持一样武器的影子(但是没法覆盖所有情况 例如亮茄剑):
+---local build, symbol = player.AnimState:GetSymbolOverride('swap_object')
+---shadow.AnimState:OverrideSymbol('swap_object', build, symbol)
+---```
+function AnimState:GetSymbolOverride(symbol)
+end
+
+---获取通道的位置坐标，四个参数，第一个是通道名，后面三个是x,y,z坐标的偏移量
+---@param symbol string # 通道名
+---@param offset_x number # 偏移量x
+---@param offset_y number # 偏移量y
+---@param offset_z number # 偏移量z
+---author: Runar
+function AnimState:GetSymbolPosition(symbol,offset_x,offset_y,offset_z)
+end
+
+---获取可视化边界
+---@return number # bbx1
+---@return number # bby1
+---@return number # bbx2
+---@return number # bby2
+---author: lan (bbx1-bbx2)取绝对值是宽,y是高
+function AnimState:GetVisualBB()
+end
+
+---隐藏图层(Layer)
+---@param layername string # 图层名
+---author: Runar
+function AnimState:Hide(layername)
+end
+
+---隐藏通道
+---@param symbol string # 通道名
+---如果你要隐藏头发,要同时hide这俩: `hair_hat` `hair`, 我也不知道为什么只hide一个hide不掉
+---
+---author: Runar
+function AnimState:HideSymbol(symbol)
+end
+
+---当前动画是否为给出名动画
+---@param animname string # 动画名
+---@return boolean # 是否为该动画
+---author: Runar
+function AnimState:IsCurrentAnimation(animname)
+end
+
+---通道是否被覆盖
+---@return boolean # 是否被覆盖
+---author: Runar
+function AnimState:IsSymbolOverridden()
+end
+
+---UNKNOWN
+---author: 
+function AnimState:MakeFacingDirty()
+end
+
+---UNKNOWN
+---author: 
+function AnimState:OverrideBrightness()
+end
+
+---UNKNOWN
+---author: 
+function AnimState:OverrideHue()
+end
+
+---覆盖物品皮肤通道 \
+---主客端均不支持字符串哈希
+---@param oldsymbol string # 通道名
+---@param skinbuild string # 皮肤build
+---@param skinsymbol string # 覆盖通道
+---@param guid number|nil # inst.GUID
+---@param oldbuild string|nil # 原build
+---author: Runar
+function AnimState:OverrideItemSkinSymbol(oldsymbol,skinbuild,skinsymbol,guid,oldbuild)
+end
+
+---覆盖叠乘的颜色
+---@param r number # 红色通道(0~1)
+---@param g number # 绿色通道(0~1)
+---@param b number # 蓝色通道(0~1)
+---@param a number # 不透明度(0~1)
+---author: Runar
+function AnimState:OverrideMultColour(r,g,b,a)
+end
+
+---UNKNOWN
+---author: 
+function AnimState:OverrideSaturation()
+end
+
+---UNKNOWN
+---@param num number # 
+---author: 
+function AnimState:OverrideShade(num)
+end
+
+---覆盖皮肤通道，与OverrideSymbol用法一致
+---@param oldsymbol string # 通道名
+---@param skin_build string # 覆盖通道所在的build
+---@param newsymbol string # 覆盖通道
+---author: Runar
+function AnimState:OverrideSkinSymbol(oldsymbol,skin_build,newsymbol)
+end
+
+---覆盖通道
+---@param oldsymbol string|hashed_code # 通道名
+---@param newbuild string|hashed_code # 覆盖通道所在的build
+---@param newsymbol string|hashed_code # 覆盖通道
+---author: Runar
+function AnimState:OverrideSymbol(oldsymbol,newbuild,newsymbol)
+end
+
+---暂停动画
+---author: Runar
+function AnimState:Pause()
+end
+
+---播放动画
+---@param animname string|num_string # 
+---@param loop boolean|nil # 
+---author: Runar
+function AnimState:PlayAnimation(animname,loop)
+end
+
+---推送动画, 仅当上一个动画完播一次后才播放 \
+---`loop == nil`时继承上一个动画的循环状态
+---@param animname string|num_string # 
+---@param loop boolean|nil # 
+---author: Runar
+function AnimState:PushAnimation(animname,loop)
+end
+
+---恢复暂停的动画
+---author: Runar
+function AnimState:Resume()
+end
+
+---颜色叠加
+---@param r number # 红色通道`[0, 1]`
+---@param g number # 绿色通道`[0, 1]`
+---@param b number # 蓝色通道`[0, 1]`
+---@param a number # 不透明度`[0, 1]`
+---author: Runar
+function AnimState:SetAddColour(r,g,b,a)
+end
+
+---Spriter 里动画的父级节点的名字
+---@param name string|hashed_code # 动画父节点名
+---author: Runar
+function AnimState:SetBank(name)
+end
+
+---看名字能猜到是 SetBank()与PlayAnimation()两个方法的结合
+---@param bankname string|hashed_code # 动画父节点名
+---@param animname string|hashed_code|num_string # 动画名
+---author: Runar
+function AnimState:SetBankAndPlayAnimation(bankname,animname)
+end
+
+---设置是否参与泛光后处理效果，并设置着色器 `GLSL` <br> 模组着色器路径需要应用 `resolvefilepath`
+---@param path string # 着色器路径 `.ksh`
+---author: Runar, 亚丹
+function AnimState:SetBloomEffectHandle(path)
+end
+
+---设置动画光度,0为亏曝,2为过曝
+---@param brightness number # 光度 `[0,2]`
+---author: Runar
+function AnimState:SetBrightness(brightness)
+end
+
+---buildname 就是 scml 文件的名字
+---@param buildname string|hashed_code # build名
+---author: Runar
+function AnimState:SetBuild(buildname)
+end
+
+---替换客户端显示的build
+---@param state string # 
+---@param build string|hashed_code # 
+---@param overridebuild string|hashed_code # 
+---author: 
+function AnimState:SetClientsideBuildOverride(state,build,overridebuild)
+end
+
+---UNKNOWN
+---@param name string # 
+---@param flag boolean # 
+---author: 
+function AnimState:SetClientSideBuildOverrideFlag(name,flag)
+end
+
+---设置默认着色器 `GLSL`
+---@param path string # 着色器路径 `.ksh`
+---author: Runar \
+---模组着色器路径需要应用 `resolvefilepath`
+function AnimState:SetDefaultEffectHandle(path)
+end
+
+---动画播放速度（速度倍数）
+---@param speed number # 倍率
+---author: Runar
+function AnimState:SetDeltaTimeMultiplier(speed)
+end
+
+---UNKNOWN
+---author: 
+function AnimState:SetDepthBias()
+end
+
+---UNKNOWN
+---author: 
+function AnimState:SetDepthTestEnabled()
+end
+
+---UNKNOWN
+---author: 
+function AnimState:SetDepthWriteEnabled()
+end
+
+---UNKNOWN
+---@param parallax boolean #
+---author:
+function AnimState:SetErosionParallax(parallax)
+end
+
+---设置消融/侵蚀/淡入淡出效果参数
+---@param progress number # 消融进度(不消融`0-1`完全消融)`[0,1]`
+---@param direction number # 消融方向`[0,1]`
+---@param edge_softness number # 边缘锐度(常用1)`[0,5]`
+---author: 小星, Runar
+function AnimState:SetErosionParams(progress,direction,edge_softness)
+end
+
+---UNKNOWN
+---@param param number # 
+---author: 
+function AnimState:SetFinalOffset(param)
+end
+
+---调试着色器参数
+---@param x number # FLOAT_PARAMS.x
+---@param y number # FLOAT_PARAMS.y
+---@param z number # FLOAT_PARAMS.z
+---author: Runar \
+---对应着色器变量 `uniform vec3 FLOAT_PARAMS;`
+function AnimState:SetFloatParams(x, y, z)
+end
+
+---UNKNOWN
+---@param force boolean
+---author:
+function AnimState:SetForceSinglePass(force)
+end
+
+---设置动画到第多少帧
+---@param frame number # 第多少帧
+---author: lan
+function AnimState:SetFrame(frame)
+end
+
+---设置hat symbol的偏移，用于优化头型奇怪的角色（如沃特）戴着帽子的视觉效果，不影响鼠标选中区域
+---@param param1 number # 
+---@param param2 number # 
+---author: 亚丹
+function AnimState:SetHatOffset(param1,param2)
+end
+
+---让物品产生闪烁效果，与自定义着色器效果不兼容
+---@param bool boolean # 
+---author: 亚丹
+function AnimState:SetHaunted(bool)
+end
+
+---设置高光色彩
+---@param r number # 
+---@param g number # 
+---@param b number # 
+---@param a number # 
+---author: 
+function AnimState:SetHighlightColour(r,g,b,a)
+end
+
+---设置动画色度
+---@param hue number # 色度(0~1)
+---author: Runar
+function AnimState:SetHue(hue)
+end
+
+---UNKNOWN
+---@param bool boolean # 
+---author: 
+function AnimState:SetInheritsSortKey(bool)
+end
+
+---设置显示层级，显示层级数字高的物体必定显示在显示层级数字低的物体之上
+---@param const any # layer 
+---author: 亚丹
+function AnimState:SetLayer(const)
+end
+
+---UNKNOWN
+---@param num number # 
+---author: 
+function AnimState:SetLightOverride(num)
+end
+
+---UNKNOWN
+---author: 
+function AnimState:SetManualBB()
+end
+
+---颜色叠乘(衰减)
+---@param r number # 红色通道`[0, 1]`
+---@param g number # 绿色通道`[0, 1]`
+---@param b number # 蓝色通道`[0, 1]`
+---@param a number # 不透明度`[0, 1]`
+---author: Runar
+function AnimState:SetMultColour(r,g,b,a)
+end
+
+---把symbol1放到symbol2前
+---@param symbol1 string # 
+---@param symbol2 string # 
+---author: 
+function AnimState:SetMultiSymbolExchange(symbol1,symbol2)
+end
+
+---UNKNOWN
+---@param num number # 
+---author: 
+function AnimState:SetOceanBlendParams(num)
+end
+
+---设置动画的方向，参数从constants.lua里取ANIM_ORIENTATION
+---@param ANIM_ORIENTATION number # 动画朝向
+---author: Runar
+function AnimState:SetOrientation(ANIM_ORIENTATION)
+end
+
+---动画播放百分比，固定帧，不会动（动画名，百分比）
+---@param animname string # 
+---@param percent number # 
+---author: 
+function AnimState:SetPercent(animname,percent)
+end
+
+---UNKNOWN
+---@param bool boolean # 
+---author: 
+function AnimState:SetRayTestOnBB(bool)
+end
+
+---设置动画饱和度
+---@param saturation number # 饱和度`[0,1]`
+---author: Runar
+function AnimState:SetSaturation(saturation)
+end
+
+---贴图缩放
+---@param x number # 
+---@param y number # 
+---@param z nil|number # 
+---author: 
+function AnimState:SetScale(x,y,z)
+end
+
+---UNKNOWN
+---author: 
+function AnimState:SetSkin()
+end
+
+---设置排序层级，在同一显示层级内，排序层级高的物体必定显示在排序层级低的物体之上
+---@param order integer # 该值范围为[-3, 3]
+---author: 亚丹, lan
+function AnimState:SetSortOrder(order)
+end
+
+---UNKNOWN
+---@param param1 number # 
+---@param param2 number # 
+---@param param3 number # 
+---author: 
+function AnimState:SetSortWorldOffset(param1,param2,param3)
+end
+
+---设置通道叠加颜色,会受原色的影响,恢复原来的颜色 只要设置RGBA都为`0`即可
+---@param symbol string # 通道名
+---@param r number # 红色通道`[0,1]`
+---@param g number # 绿色通道`[0,1]`
+---@param b number # 蓝色通道`[0,1]`
+---@param a number # 不透明度`[0,1]`
+---author: Runar
+function AnimState:SetSymbolAddColour(symbol,r,g,b,a)
+end
+
+---UNKNOWN
+---@param name string # 
+---author: 
+function AnimState:SetSymbolBloom(name)
+end
+
+---设置通道光度,0为亏曝,2为过曝
+---@param symbol string # 通道名
+---@param brightness number # 光度`[0,2]`
+---author: Runar
+function AnimState:SetSymbolBrightness(symbol,brightness)
+end
+
+---把通道2放到通道1前
+---@param symbol1 string # 通道1
+---@param symbol2 string # 通道2
+---author: Runar
+function AnimState:SetSymbolExchange(symbol1,symbol2)
+end
+
+---设置通道色度
+---@param symbol string # 通道名
+---@param hue number # 色度(0~1)
+---author: Runar
+function AnimState:SetSymbolHue(symbol,hue)
+end
+
+---UNKNOWN
+---@param symbol string # 
+---@param override number # 
+---author: 
+function AnimState:SetSymbolLightOverride(symbol,override)
+end
+
+---设置通道叠乘颜色
+---@param symbol string # 通道名
+---@param r number # 红色通道`[0,1]`
+---@param g number # 绿色通道`[0,1]`
+---@param b number # 蓝色通道`[0,1]`
+---@param a number # 不透明度`[0,1]`
+---author: Runar
+function AnimState:SetSymbolMultColour(symbol,r,g,b,a)
+end
+
+---设置通道饱和度
+---@param symbol string # 通道名
+---@param saturation number # 饱和度
+---author: Runar
+function AnimState:SetSymbolSaturation(symbol,saturation)
+end
+
+---设置当前动画从第几秒开始播放（秒）
+---@param time number # 时间(秒)
+---author: Runar
+function AnimState:SetTime(time)
+end
+
+---UNKNOWN
+---@param param1 number # 
+---@param param2 number # 
+---@param param3 number # 
+---@param param4 number # 
+---author: 
+function AnimState:SetUILightParams(param1,param2,param3,param4)
+end
+
+---UNKNOWN
+---@param x number # 
+---@param y number # 
+---@param z number # 
+---author: 
+function AnimState:SetWorldSpaceAmbientLightPos(x,y,z)
+end
+
+---显示图层(Layer)
+---@param layername string # 图层名
+---author: Runar
+function AnimState:Show(layername)
+end
+
+---显示通道，与HideSymbol对应
+---@param symbol string # 通道名
+---author: Runar
+function AnimState:ShowSymbol(symbol)
+end
+
+---UNKNOWN
+---@param bool boolean # 
+---author: 
+function AnimState:UseColourCube(bool)
+end
+
+---UNKNOWN
+---author: 
+function AnimState:UseHeadHatExchange()
+end
+
+---UNKNOWN
+---@param bool boolean # 
+---author: 
+function AnimState:UsePointFiltering(bool)
+end
+

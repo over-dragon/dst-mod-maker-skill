@@ -1,0 +1,160 @@
+---@meta
+
+---@class ent # 实体
+---@field AnimState AnimState # 动画 <br> 需要 `inst.entity:AddAnimState()`
+---@field Transform Transform # 变换 <br> 需要 `inst.entity:AddTransform()`
+---@field SoundEmitter SoundEmitter # 声音 <br> 需要 `inst.entity:AddSoundEmitter()`
+---@field Physics Physics # 物理 <br> 需要 `inst.entity:AddPhysics()`
+---@field Network Network # 网络 <br> 需要 `inst.entity:AddNetwork()`
+---@field Light Light # 光照 <br> 需要 `inst.entity:AddLight()`
+---@field LightWatcher LightWatcher # 光照监视器 <br> 需要 `inst.entity:AddLightWatcher()`
+---@field Label Label # 文字 <br> 需要 `inst.entity:AddLabel()`
+---@field Follower Follower # 跟随者 <br> 需要 `inst.entity:AddFollower()`
+---@field MiniMapEntity MiniMapEntity # 有小地图图标的实体 <br> 需要 `inst.entity:AddMiniMapEntity()`
+---@field VFXEffect VFXEffect # 粒子专用 <br> 需要 `inst.entity:AddVFXEffect()` <br> 其实还有一个叫 `ParticleEmitter` 是旧版的,这两个只能设置一个,旧版的就不写出来了 
+---@field GroundCreepEntity GroundCreepEntity # 造成减速的地面实体 <br> 需要 `inst.entity:AddGroundCreepEntity()`
+---@field components components # 组件
+---@field replica replica_components # 客机组件
+---@field prefab PrefabID # 预制物的Prefab ID
+---@field EnableLoadingProtection idk
+---@field inlimbo idk
+---@field GetMoistureRateScale idk
+---@field _lunarportalmax idk
+---@field CanSeePointOnMiniMap idk
+---@field skeleton_prefab boolean|nil # 角色死亡留下骨架
+---@field EnableBoatCamera idk
+---@field playercolour idk
+---@field MakeGenericCommander idk
+---@field wallupdatecomponents idk
+---@field IsActing idk
+---@field killtask idk
+---@field _isrezattuned idk
+---@field OnRemoveEntity idk
+---@field _PostActivateHandshakeState_Client idk
+---@field pendingtasks idk
+---@field ApplySkinOverrides idk
+---@field ResetMinimapOffset idk
+---@field sg nil|StateGraphInstance
+---@field IsHUDVisible idk
+---@field ApplyScale idk
+---@field SetCameraDistance idk
+---@field SetGhostMode idk
+---@field ShowActions idk
+---@field HUD idk
+---@field SetGymStartState idk
+---@field ScreenFlash idk
+---@field player_classified idk
+---@field SaveForReroll idk
+---@field event_listening idk
+---@field children idk
+---@field actioncomponents idk
+---@field CloseMinimap idk
+---@field lower_components_shadow idk
+---@field SwapAllCharacteristics idk
+---@field OnPostActivateHandshake_Server idk
+---@field cameradistancebonuses idk
+---@field IsOverheating idk
+---@field updatecomponents idk
+---@field xpgeneration_task idk
+---@field ShakeCamera idk
+---@field OnDespawn idk
+---@field YOTB_isskinunlocked idk
+---@field SetClientAuthoritativeSetting idk
+---@field IsFreezing idk
+---@field IsChannelCastingItem idk
+---@field _PICKUPSOUNDS idk
+---@field ShowHUD idk
+---@field OnWakeUp idk
+---@field IsInAnyStormOrCloud idk
+---@field actionreplica idk
+---@field SynchronizeOneClientAuthoritativeSetting idk
+---@field GetTemperature idk
+---@field OnSleepIn idk
+---@field _serverpauseddirtyfn idk
+---@field _hermit_music idk
+---@field GetMaxMoisture idk
+---@field ghostenabled idk
+---@field _underleafcanopy idk
+---@field IsChannelCasting idk
+---@field EnableMovementPrediction idk
+---@field worldstatewatching idk
+---@field RemoveCameraExtraDistance idk
+---@field SetCameraZoomed idk
+---@field TargetForceAttackOnly idk
+---@field CanSeeTileOnMiniMap idk
+---@field HostileTest idk
+---@field ChangeFromMonkey idk
+---@field CanUseTouchStone idk
+---@field DisableLoadingProtection idk
+---@field IsInMiasma idk
+---@field AddCameraExtraDistance idk
+---@field YOTB_issetunlocked idk
+---@field PostActivateHandshake idk
+---@field OnPreLoad idk
+---@field OnPostActivateHandshake_Client idk
+---@field ShowPopUp idk
+---@field spawntime idk
+---@field event_listeners idk
+---@field SnapCamera idk
+---@field name idk
+---@field IsNearDanger idk
+---@field SetGymStopState idk
+---@field LoadForReroll idk
+---@field GUID GUID
+---@field GetMoisture idk
+---@field ScreenFade idk
+---@field inherentactions idk
+---@field OnLoad idk
+---@field OnNewSpawn idk
+---@field persists idk
+---@field _shadowportalmax idk
+---@field OnSave idk
+---@field entity ent_sys # C层的东西,部分方法已在 `EntityScript` 进行封装
+---@field customidleanim idk
+---@field ChangeToMonkey idk
+---@field IsCarefulWalking idk
+---@field _PostActivateHandshakeState_Server idk
+---@field AttachClassified idk
+---@field isplayer idk
+---@field GetStormLevel idk
+---@field _sharksoundparam idk
+---@field ApplyAnimScale idk
+---@field _winters_feast_music idk
+---@field userid idk
+---@field IsActionsVisible idk
+---@field _skilltreeactivatedany idk
+---@field YOTB_unlockskinset idk
+---@field DetachClassified idk
+---@field talker_path_override idk
+---@field _piratemusicstate idk
+---@field chargeleft nil|number # 避雷针,电羊会有的属性,代表充能层数
+---@field foleysound nil|string # 一些可穿戴物品,移动时的声效,填的是声音路径
+---@field parent ent|nil
+---@field AccountManager nil|AccountManager
+---@field DebugRender nil|DebugRender
+---@field DynamicShadow nil|DynamicShadow
+---@field FontManager nil|FontManager
+---@field GraphicsOptions nil|GraphicsOptions
+---@field GroundCreep nil|GroundCreep
+---@field ImageWidget nil|ImageWidget
+---@field Map nil|Map
+---@field MapExplorer nil|MapExplorer
+---@field MapLayerManager nil|MapLayerManager
+---@field MiniMap nil|MiniMap
+---@field PhysicsWaker nil|PhysicsWaker
+---@field PostProcessor nil|PostProcessor
+---@field RoadManager nil|RoadManager
+---@field ShadowManager nil|ShadowManager
+---@field TextEditWidget nil|TextEditWidget
+---@field TextWidget nil|TextWidget
+---@field TwitchOptions nil|TwitchOptions
+---@field UITransform nil|UITransform
+---@field VideoWidget nil|VideoWidget
+---@field WaveComponent nil|WaveComponent
+---@field starting_inventory nil|table
+---@field soundsname nil|string
+---@field CreateSanityBadge nil|widget_badge # 替换sanity的badge
+---@field CreateHealthBadge nil|widget_badge # 替换health的badge
+---@field resurrect_multiplier nil|number # 最终承伤比
+---@field brain idk # 
+---@field displaynamefn fun(inst:ent):(string|nil)|nil

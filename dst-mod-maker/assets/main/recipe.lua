@@ -1,0 +1,8 @@
+-- 新增普通配方骨架，按需求填写后启用；材料 prefab ID 与分类核对当前源码/注解。
+-- 第五参数是 filters；默认 MODS 不代替实际用途分类（如 TOOLS、LIGHT、CLOTHING）。
+-- AddRecipe2("my_prefab",
+--     { Ingredient("twigs", 2), Ingredient("goldnugget", 1) },
+--     TECH.SCIENCE_ONE,
+--     {},
+--     { "TOOLS" })
+-- 复用已注册的官方图标时选真实 image，勿重复 RegisterInventoryItemAtlas。

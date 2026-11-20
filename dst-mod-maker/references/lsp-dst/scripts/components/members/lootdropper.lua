@@ -1,0 +1,211 @@
+---@meta
+
+---@class component_lootdropper: component_base
+---@field numrandomloot number|nil #默认nil,触发加权随机掉落后抽取随机掉落物的次数,大于0时才启用随机掉落
+---@field randomloot nil|{prefab:PrefabID, weight:number}[] #默认nil,加权随机掉落表
+---@field chancerandomloot number|nil #默认nil,0~1概率值，触发加权随机掉落的几率
+---@field totalrandomweight number|nil #默认nil,加权随机掉落总权重
+---@field chanceloot nil|{prefab:PrefabID, chance:number}[] #默认nil,概率随机掉落表
+---@field ifnotchanceloot nil|{prefab:PrefabID}[] #默认nil,没有触发概率随机掉落时使用的掉落表
+---@field droppingchanceloot boolean #默认false,是否已触发概率掉落
+---@field loot nil|{prefab:PrefabID} #默认nil,固定掉落列表
+---@field chanceloottable string|nil #默认nil,全局共享掉落表名称
+---@field trappable boolean #默认true,是否可被陷阱捕获?,坦白的说我也不知道这个干嘛用的
+---@field droprecipeloot boolean #默认true,是否启用根据配方掉落材料 <br>@lan: 当你不想按照配方掉落并设置了自己的loots表时,在`DropLoot`前,设置为`false`,就可以按照你自己的掉落逻辑来了
+---@field lootfn function|nil #默认是nil,疑似是lootsetupfn写错了,建议不要管这个字段
+---@field flingtargetpos Vector3|nil #默认nil,物品抛射目标的坐标,默认向全圆周抛射
+---@field flingtargetvariance number|nil #默认nil,抛射角度随机偏移弧度值
+---@field lootsetupfn function|nil #默认nil,用于动态配置掉落参数的回调函数
+---@field randomhauntedloot nil|{prefab:PrefabID, weight:number}[] #默认nil,被作祟时的掉落表
+---@field totalhauntedrandomweight number #默认0,被作祟时掉落总权重
+local lootdropper = {}
+
+---设置共享掉落表
+---@param name string # 共享掉落表名称，注册进全局 LootTables，供 SetChanceLootTable 引用
+---@param table {prefab:PrefabID, weight:number}[] # 掉落表内容，每项为 {prefab, chance} 结构，chance 为 0~1 的掉落概率
+---@return nil
+---author: Runar(Agent)
+function SetSharedLootTable(name, table) end
+
+---添加加权随机掉落物
+---@param prefab PrefabID #物品名称 
+---@param weight number # 权重
+---@return nil
+---author: 观测分析思考, Runar(Agent)
+---<br>举个例子:
+---```
+---mob:AddRandomLoot("meat", 3)   -- 3/7概率
+---mob:AddRandomLoot("hide", 2)   -- 2/7概率 
+---mob:AddRandomLoot("tooth", 2)  -- 2/7概率
+---```
+function lootdropper:AddRandomLoot(prefab,weight)
+end
+
+---清空加权随机掉落物表,具体会置空:
+---<br>randomloot-加权随机掉落表
+---<br>totalrandomweight-加权随机掉落总权重
+---<br>numrandomloot-触发加权随机掉落时的抽取次数
+---@return nil
+---author: 观测分析思考, Runar(Agent)
+function lootdropper:ClearRandomLoot()
+end
+
+---设置固定掉落物表loot
+---@param loots PrefabID[] # 掉落物名称表
+---@return nil
+---author: 观测分析思考, Runar(Agent)
+---<br>调用此方法会置空chanceloot(概率随机掉落表)、randomloot(加权随机掉落表)和numrandomloot(加权随机掉落触发次数)
+---<br>除此之外会在正常掉落后面追加这个表里面的物品，不是重新设置所有的掉落物!
+function lootdropper:SetLoot(loots)
+end
+
+---添加被作祟时的加权随机掉落物
+---@param prefab PrefabID # 物品名称
+---@param weight number # 权重
+---@return nil
+---author: 观测分析思考, Runar(Agent)
+function lootdropper:AddRandomHauntedLoot(prefab,weight)
+end
+
+---触发掉落
+---@param pt Vector3|nil #触发掉落的位置,不填则为组件挂载的inst的位置
+---@return nil
+---author: 观测分析思考, Runar(Agent)
+function lootdropper:DropLoot(pt)
+end
+
+---按照当前耐久度(默认1)得到对应的配方材料的掉落表{PrefabID,...}
+---@param recipe table #配方类,对于添加过配方的物品可以这么调用:AllRecipes["配方名字"]
+---author: 观测分析思考, Runar(Agent)
+---<br>对于建筑物，在满耐久没有被烧毁的情况下用锤子砸掉建筑会返还50%的材料，向上取整
+---<br>满耐久烧毁的情况下会返还25%的材料,向上取整
+---<br>若配方中有可继续分解的配方(木板,石砖),通常会分解然后按照相同规则递归计算数量
+---<br>例外:木牌被锤会返还木板，应该是单独设置了?
+---@return idk[]
+function lootdropper:GetRecipeLoot(recipe)
+end
+
+---获取幸运掉落的受益者(致死者或最近一次工作的角色)
+---@return ent|nil # 幸运玩家实体,无法确定时为 nil
+---@nodiscard
+---author: Runar(Agent)
+function lootdropper:GetLuckyUser() end
+
+---按幸运值修正掉落概率(幸运玩家击杀/工作时提升几率)
+---@param chance number # 原始概率(>=1 时直接返回)
+---@return number # 修正后的概率
+---@nodiscard
+---author: Runar(Agent)
+function lootdropper:GetChance(chance) end
+
+---设置掉落初始化回调函数,在GenerateLoot()最开始时调用
+---@param fn function|nil # 掉落初始化回调,GenerateLoot() 开头会以组件实例自身为参数调用它
+---@return nil
+---author: 观测分析思考, Runar(Agent)
+---<br>小例子：
+---```
+---inst.components.lootdropper:SetLootSetupFn(function(lootdropper)
+---   -- lootdropper 即 LootDropper 组件实例
+---   lootdropper.numrandomloot = 2  -- 直接修改组件属性,设置触发加权随机掉落时抽取随机掉落物的次数为2
+---   lootdropper:AddChanceLoot("log", 0.5)  -- 调用组件方法,设置50%概率随机多掉落一个木头
+---end)
+---```
+function lootdropper:SetLootSetupFn(fn)
+end
+
+---spawn一个战利品
+---@param lootprefab PrefabID # 要生成的掉落物预制体名
+---@param pt Vector3|nil # 掉落物抛射起点,不填则用 inst 当前位置
+---@param linked_skinname string|nil # 掉落物使用的皮肤名,透传给 SpawnPrefab
+---@param skin_id number|nil # 掉落物使用的皮肤物品 id,透传给 SpawnPrefab
+---@param userid string|nil # 生成者的 userid,透传给 SpawnPrefab 作为 creator
+---@return ent
+---author: lan, Runar(Agent)
+function lootdropper:SpawnLootPrefab(lootprefab,pt,linked_skinname,skin_id,userid)
+end
+
+---获取一个配方的所有原材料{PrefabID,...}，与GetRecipeLoot()不同在于此方法不考虑耐久和烧毁的情况,
+---<br>对可分解的材料同样会使用递归查询配方。
+---<br>例如如果一个配方需要两个木头，那么返回的掉落表则是{"log","log"}
+---@param recipe table #配方类,对于添加过配方的物品可以这么调用:AllRecipes["配方名字"]
+---@return idk
+---author: 观测分析思考, Runar(Agent)
+function lootdropper:GetFullRecipeLoot(recipe)
+end
+
+---抛射掉落物的方法
+---@param loot ent|nil #掉落物的实体对象 
+---@param pt Vector3|nil #掉落物开始抛射(掉落)的位置，不填则为掉落物的实体位置
+---@return nil
+---author:观测分析思考, Runar(Agent)
+function lootdropper:FlingItem(loot,pt)
+end
+
+---设置掉落物抛射的目标位置和随机偏移量
+---@param pos Vector3|nil #不填则表示向全圆周抛射
+---@param variance number #角度值,不填在计算时会当成0
+---@return nil
+---author: 观测分析思考, Runar(Agent)
+function lootdropper:SetFlingTarget(pos,variance)
+end
+
+---添加概率随机掉落表,每一个掉落物独立计算,
+---@param prefab PrefabID #掉落物名称
+---@param chance number #掉落概率,>=1.0则表示强制掉落
+---@return nil
+---author: 观测分析思考, Runar(Agent)
+---<br>例子：
+---```
+---mob:AddChanceLoot("goldnugget", 0.25) -- 25%几率
+---mob:AddChanceLoot("redgem", 1.0)     -- 必定掉落
+---```
+function lootdropper:AddChanceLoot(prefab,chance)
+end
+
+---得到所有可能的掉落物表{PrefabID,...}
+---@param setuploot boolean #是否需要初始化，true则会在计算表之前调用lootsetupfn()方法
+---author: 观测分析思考, Runar(Agent)
+---计算表的时候不会考虑具体设置的概率和权重，所以即便你设置的是0，只要相应的随机表里面有条目他都会添加
+---@return idk[]
+function lootdropper:GetAllPossibleLoot(setuploot)
+end
+
+---生成最终掉落表的方法，此方法返回的表就是这次会掉落的物品表
+---@return idk[]
+---author: 观测分析思考, Runar(Agent)
+function lootdropper:GenerateLoot()
+end
+
+---返回一个掉落物名字，每次触发加权随机掉落的时候都会调用此方法
+---@return string
+---author: 观测分析思考, Runar(Agent)
+function lootdropper:PickRandomLoot()
+end
+
+---添加未触发概率掉落时的备用掉落物
+---@param prefab PrefabID #掉落物名称 
+---@return nil
+---author: 观测分析思考, Runar(Agent)
+---<br>比如说：
+---<br>AddChanceLoot("goldnugget", 0.25) -- 25%几率
+---<br>当没有触发的时候就会掉落IfNotChanceLoot表的所有掉落物
+function lootdropper:AddIfNotChanceLoot(prefab)
+end
+
+---清空概率掉落表(chanceloot)与未触发概率掉落时的备用掉落表(ifnotchanceloot)
+---@return nil
+---author: Runar(Agent)
+function lootdropper:ClearChanceLoot() end
+
+---获取当前的加权随机掉落表(被作祟时返回作祟掉落表,否则返回普通随机掉落表)
+---@return {prefab:PrefabID, weight:number}[]|nil # 加权随机掉落表,未设置时为 nil
+---@nodiscard
+---author: Runar(Agent)
+function lootdropper:GetRandomLootTable() end
+
+---设置共享触发概率掉落物表名
+---@param name string # 由 SetSharedLootTable 注册的共享概率掉落表名
+---@return nil
+---author: Runar
+function lootdropper:SetChanceLootTable(name)
+end
