@@ -140,6 +140,7 @@ Asset("IMAGE", geticon())''')
             root = Path(temp)
             sources = {
                 "modmain.lua": 'modimport("main/init")\nmodimport("postinit/components/pickable")',
+                "postinit/components/pickable.lua": "-- fixture",
                 "main/init.lua": 'Assets = { Asset("ANIM", "anim/hammer.zip") }',
                 "main/prefabs.lua": 'PrefabFiles = {"my_item"}\nAddPrefabPostInit("my_item", fn)\nGLOBAL.RegisterSinglePrefab(p)',
                 "main/recipe.lua": '''-- Ingredient("not_real", 1)
@@ -155,6 +156,24 @@ AddRecipe2("my_item", { Ingredient("gold", 1), Ingredient("twigs", 2) }, TECH.SC
             findings = json.loads(out)["new_mod"]
             self.assertEqual({f["kind"] for f in findings}, {"DIRECT_POSTINIT_IMPORT", "GLOBAL_DECL_OUTSIDE_INIT", "RECIPE_FILTER_UNSPECIFIED", "INGREDIENT_UNVERIFIED", "DUPLICATE_PREFAB_ASSET", "HOOK_IN_ASSEMBLY", "MANUAL_PREFAB_REGISTRATION"})
             self.assertEqual([f["detail"] for f in findings if f["kind"] == "INGREDIENT_UNVERIFIED"], ["'gold' absent from bundled prefab annotations and literal local Prefab declarations; verify current source or dependency"])
+
+    def test_modimport_targets_from_nested_file(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "main").mkdir()
+            (root / "main/language.lua").touch()
+            (root / "main/init.lua").write_text(
+                'modimport("main/language")\nenv.modimport("main/language.lua")\n'
+                'modimport "main/languag"\nmodimport("main/" .. name)\n'
+                'modimport("../external")\nother.modimport("ignored")\n'
+                '-- modimport("example")\n', encoding="utf-8")
+            code, out, _ = run_tool(check_mod, [root, "--no-luac", "--new-mod", "--json"])
+            self.assertEqual(code, 3)
+            findings = json.loads(out)["new_mod"]
+            self.assertEqual([(f["line"], f["kind"]) for f in findings],
+                             [(3, "MODIMPORT_MISSING"), (4, "MODIMPORT_UNCHECKED"),
+                              (5, "MODIMPORT_UNCHECKED")])
+            self.assertIn("main/languag.lua", findings[0]["detail"])
 
     def test_new_mod_conventions_allow_valid_custom_prefabs_and_filters(self):
         with tempfile.TemporaryDirectory() as temp:

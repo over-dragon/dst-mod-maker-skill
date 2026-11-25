@@ -234,9 +234,20 @@ def literal(arg):
 def simple_calls(tokens):
     names = {"modimport", "AddRecipe2", "Ingredient", "Asset", "Prefab"}
     for i, (kind, name, line) in enumerate(tokens[:-1]):
-        if kind == "word" and name in names and tokens[i+1][:2] == ("symbol", "("):
+        if kind != "word" or name not in names:
+            continue
+        if name == "modimport":
+            prev = tokens[i-1][:2] if i else None
+            if prev == ("word", "function") or prev == ("symbol", ":"):
+                continue
+            if prev == ("symbol", ".") and (i < 2 or tokens[i-2][:2] != ("word", "env")):
+                continue
+            if tokens[i+1][0] == "string":
+                yield name, line, [[tokens[i+1]]]
+                continue
+        if tokens[i+1][:2] == ("symbol", "("):
             args = call_args(tokens, i)
-            if args is not None and args and literal(args[0]) is not None:
+            if args and (name == "modimport" or literal(args[0]) is not None):
                 yield name, line, args
 
 
@@ -291,8 +302,22 @@ def new_mod_findings(token_files, mod_dir):
                         note(path, line, "GLOBAL_DECL_OUTSIDE_INIT", f"{name} belongs in main/init.lua for new mods")
         for name, line, args in calls[path]:
             first = literal(args[0])
-            if name == "modimport" and rel == "modmain.lua" and first.replace("\\", "/").startswith("postinit/"):
-                note(path, line, "DIRECT_POSTINIT_IMPORT", "modmain should import the corresponding main file, which forwards to postinit")
+            if name == "modimport":
+                if first is None or PureWindowsPath(first).anchor:
+                    note(path, line, "MODIMPORT_UNCHECKED", "verify the import path at runtime")
+                    continue
+                if rel == "modmain.lua" and first.startswith("postinit/"):
+                    note(path, line, "DIRECT_POSTINIT_IMPORT", "modmain should import the corresponding main file, which forwards to postinit")
+                filename = first if first.endswith(".lua") else first + ".lua"
+                try:
+                    target = (mod_dir / filename).resolve()
+                    target.relative_to(mod_dir.resolve())
+                    exists = target.is_file()
+                except (ValueError, OSError, RuntimeError):
+                    note(path, line, "MODIMPORT_UNCHECKED", f"cannot verify {filename!r} within the mod directory")
+                    continue
+                if not exists:
+                    note(path, line, "MODIMPORT_MISSING", f"file missing relative to mod root: {filename}")
             elif name == "AddRecipe2":
                 fifth = [t[:2] for t in args[4]] if len(args) >= 5 else []
                 if not fifth or fifth in [[("word", "nil")], [("symbol", "{"), ("symbol", "}")]]:

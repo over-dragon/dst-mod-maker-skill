@@ -39,7 +39,7 @@
 - 具体类型、取值范围及数组上限查 `netvars.lua` 和 `GetIdealUnsignedNetVarForCount`，选能表达实际数据的最小类型；数组及高频变动的状态按实际开销取舍。
 - 开关/持久状态用 net_bool 等状态类型，一次性通知用 net_event；按 `netvars.lua` 的 push/set/set_local 区分事件与状态，新客户端重建不能依靠历史一次性事件。
 - 【源码】两端声明和顺序必须一致；dirty 通常由实际变化触发，set_local 不同步。根据 `netvars.lua:set/set_local` 查初始化和强制通知契约。
-- 给现有 prefab 增加 netvar 时，PostInit 不等同于原构造的 pristine 快照；按实际初始化链手动调用 dirty handler 或由服务端重新 set，保证首次客户端读值正确。参照 `prefabs/wx78_drone_zap.lua` 的 OnOwnerDirty 与 `player_classified.lua`。
+- 声明后按业务需要读写：服务端需要同步初值或状态变化时 `set(x)`，消费者需要当前值时 `value()` 或调用 replica getter。若后来创建的 UI 要立即呈现已有状态，可在绑定监听时读取当前值，例如 `widgets/statusdisplays.lua:OnSetPlayerMode` 用 `GetPercent()` 设置血量。
 
 ## 3 事件与同步
 

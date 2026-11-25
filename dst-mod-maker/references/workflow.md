@@ -69,7 +69,7 @@
 
 1. **入口与两端**：按实际执行环境和阶段区分三个入口；共享声明两端一致，权威逻辑仅服务端。检查普通网络 prefab 的 PostInit 权威段是否明确使用 `TheWorld.ismastersim`，已知世界存在时不探测 nil，已知服务端组件或图名匹配的 hook 不机械加守卫（`code_style.md` §3）。
 2. **动作与状态图**：按 `actions.md` 和 `stategraphs.md` 核对真实点击路径、候选显示、服务端最终结算、确定注册顺序、非 instant 的 ActionHandler 及需要的预测态；自建状态确认默认状态、实际生效帧、正常结束与中断清理。
-3. **netvar**：两端声明是否完全一致、是否放在 `SetPristine()` 之前、是否落在 mastersim 分支之前；PostInit 里新增的 netvar 是否手动跑过一次 dirty handler 或由服务端重新 `set`。
+3. **netvar**：核对两端声明和实际读写时机。自建 prefab 在 `SetPristine()` 和 mastersim 分支前声明。UI 若需在打开时呈现已有状态，确认此时显示正确，见 `api_patterns.md` §2。
 4. **netvar 选型**：是否按位数/场景选了合适的类型；数组类是否可避免。
 5. **RPC**：区分 C→S、S→C 和 shard→shard；注册名称/顺序一致；接收端按权威状态核验参数、身份、归属、是否仍可执行，跨分片考虑迟到、重复、迁移。
 6. **事件**：`PushEvent` 只在同一环境内接收；需要双端同步时是否改用 netvar（netvar 变化会在双端触发 dirty 事件）。

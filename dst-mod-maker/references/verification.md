@@ -24,6 +24,8 @@ python scripts/check_mod.py <模组目录> [--no-luac | --luac <Lua5.1工具>] [
 
 按任务需要运行，并如实报告方法、未解析文件、资源未查项及引擎内未测风险，不因用户熟练程度区别验证质量。
 
+`--new-mod` 还按原版 `mods.lua` 的规则检查字面量 `modimport` 路径，从模组根目录查找，缺少 `.lua` 后缀时自动补上。`MODIMPORT_MISSING` 给出缺失文件和调用行；动态表达式、含转义或无法在模组内核实的路径记为 `MODIMPORT_UNCHECKED`。两者均为提示，沿用上面的语法退出码。
+
 ## 3. 崩溃与性能排查
 
 **崩溃排查**：先取**第一条**相关错误、完整堆栈和前置警告，后面的连锁 nil 通常不是根因；沿堆栈进模组代码，用当前源码查原版调用契约，别只在报错行加 nil 判断，也别用 `pcall` 包整段逻辑或无条件 nil return 掩盖状态损坏。展开顺序：入口 → Hook → Prefab → Component/Replica → Action/SG → RPC/UI → 保存路径；先查崩溃、存档损坏、非法客户端写入，再查初始同步、任务/事件清理、退出与旧档路径，最后看资源、本地化、性能。堆栈里 `workshop-<id>` 的 `<id>` 是创意工坊模组号，映射到 `<workshop-root>/<id>`，不是 `mods/workshop-<id>`。

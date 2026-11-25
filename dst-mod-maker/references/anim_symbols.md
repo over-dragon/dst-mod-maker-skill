@@ -88,4 +88,15 @@ python scripts/unpack_anim.py "<game_root>/data/anim/<名字>.zip" -o out.json
 ## 8 音频、相机、皮肤与 shader
 
 - 音频查 `modutil.lua:RemapSoundEvent/RemoveRemapSoundEvent`、SoundEmitter 的实际 prefab 用法；相机查 `camerashake.lua`、`cameras/followcamera.lua`。镜头和本地播放按实际端别驱动，需要时用 dirty 事件同步。检查播放、停止、重复和清理路径；引擎实际表现由用户进游戏确认。
-- 皮肤查原版 skin assets 和角色/物品 skin prefab；Shader 查 SetEffect/SetShaderFloat/AddVFXEffect 的官方调用及实际素材，不推断引擎内部语义。
+- 皮肤查原版 skin assets 和角色/物品 skin prefab。
+
+### 着色器与粒子特效
+
+- 动画材质查 `AnimState:SetEffect`、`SetShaderFloat` 的原版调用。粒子查 `VFXEffect:SetRenderResources(发射器索引, 贴图, shader)`：Lua 控制发射位置、速度和寿命，shader 绘制每颗粒子。先查相近 prefab 搭配的贴图、shader 和混合模式，例如 `prefabs/torchfire_shadow.lua` 的烟雾。
+- 自定义粒子 shader 可用 GLSL 顶点文件 `.vs` 和片元文件 `.ps`。以下是 Klei Mod Tools 编译命令示例。将产物放入模组的 `shaders/`，在 prefab 的 assets 中声明 `Asset("SHADER", "shaders/my_fx.ksh")`，绑定时传 `resolvefilepath("shaders/my_fx.ksh")`。
+
+  ```text
+  ShaderCompiler.exe -little my_fx my_fx.vs my_fx.ps my_fx.ksh -oglsl
+  ```
+
+- 联网粒子参考 `prefabs/thurible_smoke.lua` 的 `InitParticles`：用 `not TheNet:IsDedicated()` 在有画面的实例创建 VFX，再用 `not TheWorld.ismastersim` 让客机提前返回。这样非专用主机也能看到粒子。
